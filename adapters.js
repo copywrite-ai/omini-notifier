@@ -74,11 +74,17 @@ const SITE_ADAPTERS = [
     domain: "www.doubao.com",
     name: "豆包",
     loadingSelectors: [
-      "[class*='stop']",
-      "[class*='Stop']",
+      // Primary (2026-03 runtime capture): answer loading indicator
+      "div[data-testid='message_loading']",
+      // Secondary: input send button (state may switch to stop)
+      "button[data-testid='chat_input_send_button'][aria-label*='停止']",
+      "button[data-testid='chat_input_send_button'][title*='停止']",
+      // Fallback: generic stop button patterns
+      "button[aria-label*='停止']",
+      "button[title*='停止']",
       "button[class*='stop']",
     ],
-    loadingTextMatch: "停止",
+    loadingTextMatch: ["停止生成", "停止回答", "停止", "思考中", "正在思考"],
   },
   {
     domain: "yuanbao.tencent.com",
