@@ -25,7 +25,7 @@ Many AI users, including myself and my friends, still prefer the web versions of
 - OpenAI ChatGPT ☑️
 - DeepSeek ☑️
 - Moonshot Kimi ☑️
-- ByteDance Doubao (豆包)
+- ByteDance Doubao (豆包) ☑️
 - Tencent Yuanbao (元宝)
 - Alibaba Tongyi (通义)
 - Minimax
@@ -52,7 +52,7 @@ Many AI users, including myself and my friends, still prefer the web versions of
 - OpenAI ChatGPT ☑️
 - DeepSeek ☑️
 - Moonshot Kimi ☑️
-- 字节跳动 豆包
+- 字节跳动 豆包 ☑️
 - 腾讯 元宝
 - 阿里巴巴 通义
 - Minimax
