@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Chat Notifier</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <span class="logo">🔔</span>
+      <h1>AI Chat Notifier</h1>
+    </div>
+
+    <div class="status-card" id="siteStatus">
+      <span class="status-dot" id="statusDot"></span>
+      <span class="status-text" id="statusText">Detecting...</span>
+    </div>
+
+    <div class="toggle-row">
+      <label for="enableToggle">Notifications</label>
+      <label class="switch">
+        <input type="checkbox" id="enableToggle" checked>
+        <span class="slider"></span>
+      </label>
+    </div>
+
+    <div class="test-row">
+      <button id="testBtn" class="test-btn">🔔 Test Notification</button>
+    </div>
+
+    <div class="info">
+      <p>Notifications fire only when the tab is in the background.</p>
+      <p class="hint">💡 Open DevTools Console on an AI chat page to see live monitoring logs.</p>
+    </div>
+
+    <div class="supported-sites">
+      <h3>Supported Sites</h3>
+      <div class="site-list" id="siteList"></div>
+    </div>
+  </div>
+  <script src="popup.js"></script>
+</body>
+</html>
