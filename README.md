@@ -21,10 +21,10 @@ Many AI users, including myself and my friends, still prefer the web versions of
 - **Notification Cooldown**: Prevents redundant alerts from flickering UI elements.
 
 ### Supported Platforms
-- Google Gemini
-- OpenAI ChatGPT
-- DeepSeek
-- Moonshot Kimi
+- Google Gemini ☑️
+- OpenAI ChatGPT ☑️
+- DeepSeek ☑️
+- Moonshot Kimi ☑️
 - ByteDance Doubao (豆包)
 - Tencent Yuanbao (元宝)
 - Alibaba Tongyi (通义)
@@ -48,10 +48,10 @@ Many AI users, including myself and my friends, still prefer the web versions of
 - **防止重复提醒**: 内置冷却机制，避免因某些平台 UI 抖动导致的重复通知。
 
 ### 支持平台
-- Google Gemini
-- OpenAI ChatGPT
-- DeepSeek
-- Moonshot Kimi
+- Google Gemini ☑️
+- OpenAI ChatGPT ☑️
+- DeepSeek ☑️
+- Moonshot Kimi ☑️
 - 字节跳动 豆包
 - 腾讯 元宝
 - 阿里巴巴 通义

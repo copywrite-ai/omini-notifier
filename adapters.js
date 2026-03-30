@@ -60,16 +60,15 @@ const SITE_ADAPTERS = [
     loadingTextMatch: "正在思考",
   },
   {
-    domain: "kimi.moonshot.cn",
+    domain: "kimi.com",
     name: "Kimi",
     loadingSelectors: [
-      ".chat-input-stop-btn",
-      "[class*='stop-btn']",
-      "[class*='stopBtn']",
-      "[class*='stop_btn']",
-      "button[class*='stop']",
+      // Primary: send-button-container gains "stop" class during generation (2026-03 verified)
+      ".send-button-container.stop",
+      // Fallback: any element with both send-button-container and stop classes
+      "div.send-button-container.stop",
     ],
-    loadingTextMatch: "停止",
+    // No loadingTextMatch — the stop state is purely class-based, no text content
   },
   {
     domain: "www.doubao.com",
