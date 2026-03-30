@@ -26,7 +26,7 @@ Many AI users, including myself and my friends, still prefer the web versions of
 - DeepSeek ☑️
 - Moonshot Kimi ☑️
 - ByteDance Doubao (豆包) ☑️
-- Tencent Yuanbao (元宝)
+- Tencent Yuanbao (元宝) ☑️
 - Alibaba Tongyi (通义)
 - Minimax (Official Notification Built-in)
 
@@ -53,6 +53,6 @@ Many AI users, including myself and my friends, still prefer the web versions of
 - DeepSeek ☑️
 - Moonshot Kimi ☑️
 - 字节跳动 豆包 ☑️
-- 腾讯 元宝
+- 腾讯 元宝 ☑️
 - 阿里巴巴 通义
 - Minimax（官方已内置通知）
