@@ -33,16 +33,18 @@ const SITE_ADAPTERS = [
     domain: "chatgpt.com",
     name: "ChatGPT",
     loadingSelectors: [
+      // Primary: data-testid (may or may not be present in current builds)
       "[data-testid='stop-button']",
+      // Aria-label variants (most stable across UI updates)
       "button[aria-label='Stop generating']",
       "button[aria-label='Stop streaming']",
       "button[aria-label='Stop']",
-      // ChatGPT thinking/reasoning indicator
+      // Reasoning model thinking indicator
       "[data-testid='thinking-indicator']",
-      // Fallback patterns
-      "button[class*='stop']",
-      "button[class*='Stop']",
+      // Send button transforms to stop button with SVG rect during generation
+      "button[data-testid='send-button'] rect",
     ],
+    loadingTextMatch: "Stop generating",
   },
   {
     domain: "chat.deepseek.com",
