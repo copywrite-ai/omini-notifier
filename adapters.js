@@ -50,24 +50,14 @@ const SITE_ADAPTERS = [
     domain: "chat.deepseek.com",
     name: "DeepSeek",
     loadingSelectors: [
-      // Aria-label based (most stable)
-      "button[aria-label*='Stop']",
-      "button[aria-label*='stop']",
-      "button[aria-label*='停止']",
-      // DeepSeek icon class patterns
-      ".ds-icon--stop",
-      "[class*='stop-icon']",
-      "[class*='StopIcon']",
-      // Danger/stop button styling
-      "button.ds-button--danger",
-      // SVG rect inside button (stop icon is often a square/rect)
-      "button[class*='stop'] rect",
-      // General stop patterns
-      "[class*='stop-btn']",
-      "[class*='stopBtn']",
-      "button[class*='stop']",
+      // Primary: loading spinner appears inside the stop icon-button during generation
+      ".ds-loading",
+      // The icon-button container that holds the loading spinner
+      ".ds-icon-button .ds-loading",
+      // "正在思考" thinking indicator section
+      "[class*='think-content']",
     ],
-    loadingTextMatch: ["Stop", "停止生成", "停止"],
+    loadingTextMatch: "正在思考",
   },
   {
     domain: "kimi.moonshot.cn",
