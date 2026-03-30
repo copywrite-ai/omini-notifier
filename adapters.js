@@ -90,11 +90,15 @@ const SITE_ADAPTERS = [
     domain: "yuanbao.tencent.com",
     name: "元宝",
     loadingSelectors: [
-      "[class*='stop']",
-      "[class*='Stop']",
-      "button[class*='stop']",
+      // Primary (2026-03 runtime capture): generation loading container
+      ".show-step-loading",
+      "[class*='show-step-loading']",
+      // Fallback: send button state variants
+      "a[class*='send-btn'][class*='stop']",
+      "button[aria-label*='停止']",
+      "button[title*='停止']",
     ],
-    loadingTextMatch: "停止",
+    loadingTextMatch: ["停止生成", "停止", "思考中", "正在思考", "生成中"],
   },
   {
     domain: "tongyi.aliyun.com",

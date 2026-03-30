@@ -5,6 +5,7 @@ Console watcher scripts used to capture real-time DOM changes and identify stabl
 ## Files
 - `deepseek-watcher.js`: DeepSeek DOM watcher.
 - `doubao-watcher.js`: Doubao DOM watcher.
+- `yuanbao-watcher.js`: Yuanbao DOM watcher.
 
 ## Usage
 1. Open target chat page.
