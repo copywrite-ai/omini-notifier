@@ -33,7 +33,9 @@
   let state = "idle"; // "idle" | "generating"
   let debounceTimer = null;
   let generationStartTime = 0;
+  let lastNotificationTime = 0;
   const DEBOUNCE_MS = 800;
+  const COOLDOWN_MS = 5000; // Suppress re-triggering for 5s after notification
 
   // ── DOM Detection ───────────────────────────────────────────────────
   function isGenerating() {
@@ -78,6 +80,10 @@
     const now = Date.now();
 
     if (state === "idle" && generating) {
+      // Cooldown: ignore brief re-appearances of stop button after a recent notification
+      if (now - lastNotificationTime < COOLDOWN_MS) {
+        return;
+      }
       state = "generating";
       generationStartTime = now;
       console.log(`${LOG_PREFIX} 🔄 ${adapter.name}: Generation STARTED`);
@@ -114,6 +120,11 @@
     const { url, elapsed, bodyLength } = event.data;
 
     if (state === "generating") {
+      // Cooldown: skip if we just sent a notification
+      if (Date.now() - lastNotificationTime < COOLDOWN_MS) {
+        console.log(`${LOG_PREFIX} 📡 Network: ignoring (cooldown active)`);
+        return;
+      }
       console.log(
         `${LOG_PREFIX} 📡 Network: streaming response completed (${elapsed}ms, ${bodyLength} bytes)`
       );
@@ -129,6 +140,7 @@
 
     state = "idle";
     clearTimeout(debounceTimer);
+    lastNotificationTime = Date.now();
 
     const elapsed = Date.now() - generationStartTime;
     console.log(
