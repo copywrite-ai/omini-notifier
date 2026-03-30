@@ -49,11 +49,16 @@
     }
 
     if (adapter.loadingTextMatch) {
+      const textMatches = Array.isArray(adapter.loadingTextMatch)
+        ? adapter.loadingTextMatch
+        : [adapter.loadingTextMatch];
       const buttons = document.querySelectorAll("button, [role='button']");
       for (const btn of buttons) {
         const text = btn.textContent || btn.innerText || "";
-        if (text.includes(adapter.loadingTextMatch) && isVisible(btn)) {
-          return true;
+        for (const match of textMatches) {
+          if (text.includes(match) && isVisible(btn)) {
+            return true;
+          }
         }
       }
     }
