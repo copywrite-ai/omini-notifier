@@ -152,43 +152,87 @@
       `${LOG_PREFIX} ✅ ${adapter.name}: Generation DONE! (detected by ${detectedBy}, took ${elapsed}ms)`
     );
 
+    // Only notify when the tab is NOT active — if the user is looking at the
+    // page, they can already see it's done; a notification would be disruptive.
+    if (!document.hidden) {
+      console.log(`${LOG_PREFIX} Tab is active, skipping notification.`);
+      return;
+    }
+
     sendNotification();
   }
 
-  // ── Send Notification ───────────────────────────────────────────────
-  function sendNotification() {
-    try {
-      chrome.storage.local.get(["enabled"], (result) => {
-        try {
-          const enabled = result.enabled !== false;
-          if (!enabled) {
-            console.log(`${LOG_PREFIX} Notifications disabled by user, skipping.`);
-            return;
-          }
+  // ── Extension Context Check ─────────────────────────────────────────
+  // Two failure modes in MV3:
+  //   1. Service worker asleep → chrome.runtime.id exists, sendMessage may
+  //      fail on first try but succeeds after retry (worker restarts on demand)
+  //   2. Extension reloaded/uninstalled → chrome.runtime.id is undefined,
+  //      truly dead, page refresh is the only fix
+  let contextDead = false;
 
-          console.log(`${LOG_PREFIX} 📨 Sending notification (hidden=${document.hidden})...`);
-          chrome.runtime.sendMessage(
-            {
-              type: "GENERATION_DONE",
-              site: adapter.name,
-              url: location.href,
-              title: document.title,
-            },
-            (response) => {
-              if (chrome.runtime.lastError) {
-                console.warn(`${LOG_PREFIX} sendMessage:`, chrome.runtime.lastError.message);
-              } else {
-                console.log(`${LOG_PREFIX} ✅ Background responded:`, response);
-              }
-            }
-          );
-        } catch (e) {
-          console.warn(`${LOG_PREFIX} Extension context lost, please refresh.`);
-        }
-      });
-    } catch (e) {
-      console.warn(`${LOG_PREFIX} Extension context invalidated. Please refresh (Cmd+R).`);
+  function isExtensionContextValid() {
+    try {
+      return !!chrome.runtime?.id;
+    } catch {
+      return false;
     }
+  }
+
+  // ── Send Notification ───────────────────────────────────────────────
+  function sendNotification(retryCount = 0) {
+    const MAX_RETRIES = 2;
+    const RETRY_DELAY = 500;
+
+    if (contextDead) return;
+
+    if (!isExtensionContextValid()) {
+      contextDead = true;
+      console.warn(`${LOG_PREFIX} Extension context invalidated (extension was reloaded or uninstalled). Please refresh the page.`);
+      return;
+    }
+
+    chrome.storage.local.get(["enabled"], (result) => {
+      if (chrome.runtime.lastError) {
+        // Service worker might just be waking up — retry
+        if (retryCount < MAX_RETRIES && isExtensionContextValid()) {
+          console.log(`${LOG_PREFIX} ⏳ Storage access failed, retrying (${retryCount + 1}/${MAX_RETRIES})...`);
+          setTimeout(() => sendNotification(retryCount + 1), RETRY_DELAY);
+          return;
+        }
+        contextDead = true;
+        console.warn(`${LOG_PREFIX} Extension context lost. Please refresh the page.`);
+        return;
+      }
+
+      const enabled = result.enabled !== false;
+      if (!enabled) {
+        console.log(`${LOG_PREFIX} Notifications disabled by user, skipping.`);
+        return;
+      }
+
+      console.log(`${LOG_PREFIX} 📨 Sending notification (hidden=${document.hidden})...`);
+      chrome.runtime.sendMessage(
+        {
+          type: "GENERATION_DONE",
+          site: adapter.name,
+          url: location.href,
+          title: document.title,
+        },
+        (response) => {
+          if (chrome.runtime.lastError) {
+            // Service worker might need a kick — retry
+            if (retryCount < MAX_RETRIES && isExtensionContextValid()) {
+              console.log(`${LOG_PREFIX} ⏳ sendMessage failed, retrying (${retryCount + 1}/${MAX_RETRIES})...`);
+              setTimeout(() => sendNotification(retryCount + 1), RETRY_DELAY);
+            } else {
+              console.warn(`${LOG_PREFIX} sendMessage failed:`, chrome.runtime.lastError.message);
+            }
+          } else {
+            console.log(`${LOG_PREFIX} ✅ Background responded:`, response);
+          }
+        }
+      );
+    });
   }
 
   // ── MutationObserver (Layer 1: DOM) ─────────────────────────────────

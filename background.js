@@ -48,7 +48,7 @@ function fireNotification(siteName, messageText, tabId, windowId) {
 
   const options = {
     type: "basic",
-    title: `✅ ${siteName} 生成完毕`,
+    title: `✅ ${siteName} — Generation Complete`,
     message: messageText || `${siteName} has finished generating.`,
     priority: 2,
   };
